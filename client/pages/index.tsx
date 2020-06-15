@@ -1,20 +1,13 @@
 import Head from 'next/head';
-import Hello from '../components/Hello';
 
-type User = {
-  name: string;
-};
 export default function Home() {
-  const gonzalo: User = { name: 'Gonzalo !' };
   return (
     <div className="container">
       <Head>
-        <title>Teach away registration</title>
+        <title>Hi</title>
       </Head>
-
       <main>
-        <Hello />
-        <h1 className="title">{gonzalo.name}</h1>
+        <h1 className="title">Gonzalo</h1>
       </main>
     </div>
   );

@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+    deverer:
+        container_name: your_life
+        image: your_life
+        restart: always
+        build: .
+        environment:
+            NODE_ENV: production
+        ports:
+            - "3000:3000"
+        logging:
+            options:
+                max-size: 50m
+        env_file: ~/.env
+        links:
+            - redis
+            - mongo-server
+    redis:
+        container_name: redis
+        image: "redis:alpine"
+        restart: always
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./redis.conf:/usr/local/etc/redis/redis.conf
+    mongo-server:
+        container_name: mongo-server
+        image: mongo
+        restart: always
+        ports:
+            - "27017:27017"

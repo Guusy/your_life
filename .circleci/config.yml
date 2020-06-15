@@ -1,0 +1,47 @@
+version: 2
+jobs:
+    deploy-prod:
+        docker:
+            - image: circleci/node:10.15.0-jessie
+        working_directory: ~/your_life
+        steps:
+            - add_ssh_keys:
+                  fingerprints:
+                      - "aca_va_el_fingerprint"
+            - checkout
+            - run:
+                  name: Add IP to known_hosts
+                  command: ssh-keyscan $HOST_PROD_IP >> ~/.ssh/known_hosts
+            - deploy:
+                  command: |
+                      chmod +x deploy.sh
+                      ./deploy.sh
+    deploy-ci:
+        docker:
+            - image: circleci/node:10.15.0-jessie
+        working_directory: ~/your_life-ci
+        steps:
+            - add_ssh_keys:
+                  fingerprints:
+                      - "aca_va_el_fingerprint"
+            - checkout
+            - run:
+                  name: Add IP to known_hosts
+                  command: ssh-keyscan $HOST_PROD_IP >> ~/.ssh/known_hosts
+            - deploy:
+                  command: |
+                      chmod +x deploy-ci.sh
+                      ./deploy-ci.sh
+
+workflows:
+    version: 2
+    build-deploy:
+        jobs:
+            - deploy-prod:
+                  filters:
+                      branches:
+                          only: master
+            - deploy-ci:
+                  filters:
+                      branches:
+                          only: develop

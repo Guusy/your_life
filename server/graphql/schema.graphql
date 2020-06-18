@@ -1,0 +1,29 @@
+type User {
+    id: ID
+    moods: [Mood]
+}
+
+type Mood {
+    title: String
+    feelings: [String]
+    description: String
+    date: String
+}
+
+
+type Query {
+    "User by id"
+    getUser( id: ID!): User
+}
+
+input AddMoodInput {
+    title: String!
+    feelings: [String]!
+    description: String!
+    date: String
+}
+
+type Mutation {
+    "Add a mood"
+    addMood(_id:ID!, input: AddMoodInput!): Mood
+}

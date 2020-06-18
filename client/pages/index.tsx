@@ -1,6 +1,26 @@
 import Head from 'next/head';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+import withApollo from '../src/lib/apollo';
 
-export default function Home() {
+const GET_USER = gql`
+  query getUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      moods {
+        title
+        feelings
+        description
+        date
+      }
+    }
+  }
+`;
+function Home() {
+  const { loading: queryLoading, error: queryError, data } = useQuery(
+    GET_USER,
+    { variables: { id: '1' } }
+  );
   return (
     <div className="container">
       <Head>
@@ -8,7 +28,33 @@ export default function Home() {
       </Head>
       <main>
         <h1 className="title">Gonzalo</h1>
+        {queryLoading && <p>Cargando tu información</p>}
+        {queryError && <p>Hubo un error cargando tu información</p>}
+        {data && (
+          <div>
+            <h4>Animos:</h4>
+            {data.getUser.moods.map(mood => (
+              <Mood {...mood} />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
 }
+
+const Mood = ({ title, description, date, feelings }) => {
+  return (
+    <div style={{ border: '1px solid black', marginBottom: '2em' }}>
+      <p>{title}</p>
+      <p>{description}</p>
+      <p>{date}</p>
+      <p>
+        Sentimientos:{' '}
+        {feelings && feelings.map(feeling => <span>{feeling},</span>)}
+      </p>
+    </div>
+  );
+};
+
+export default withApollo({ ssr: true })(Home);

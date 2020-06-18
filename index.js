@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const express = require('express');
 const next = require('next');
 const cors = require('cors');
@@ -8,7 +9,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev, dir: './client', distDir: './client' });
 const handle = app.getRequestHandler();
 
-const backend = require('./server/routes');
+const backend = require('./server/routes.ts');
 const frontend = require('./client/routes');
 
 app.prepare().then(() => {

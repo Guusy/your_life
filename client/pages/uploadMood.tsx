@@ -7,27 +7,27 @@ import {
   Select,
   Row,
   Layout,
-  DatePicker
+  DatePicker,
+  TimePicker
 } from 'antd';
 import moment from 'moment';
-import { useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import React, { useState } from 'react';
 import withApollo from '../src/lib/apollo';
+import {
+  GET_USER_AVAILABLE_FEELINGS,
+  ADD_MOOD,
+  ADD_CUSTOM_FEELING_USER
+} from '../src/graphql/queries';
+import {
+  AddCustomFeelingMutationVariables,
+  GetUserAvailableFeelingsData
+} from '../src/graphql/API';
 
 const { Option } = Select;
 const { TextArea } = Input;
 const { Content } = Layout;
-
-const ADD_MOOD = gql`
-  mutation AddMood($_id: ID!, $input: AddMoodInput!) {
-    addMood(_id: $_id, input: $input) {
-      title
-      feelings
-      description
-      date
-    }
-  }
-`;
+const { RangePicker } = TimePicker;
 
 type Mood = {
   title: string;
@@ -44,21 +44,37 @@ function uploadMood() {
     { loading: mutationLoading, error: mutationError }
   ] = useMutation(ADD_MOOD);
 
-  const onFinish = values => {
-    console.log('Success:', values);
+  const [addCustomFeeling, statusAddCustomFeeling] = useMutation<
+    null,
+    AddCustomFeelingMutationVariables
+  >(ADD_CUSTOM_FEELING_USER);
 
+  const { data, refetch: refreshAvailableFeelings } = useQuery<
+    // loading: queryLoading, error: queryError
+    GetUserAvailableFeelingsData
+  >(GET_USER_AVAILABLE_FEELINGS, { variables: { id: '1' } });
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const onFinish = values => {
+    console.log('finishhh', values);
     addMood({ variables: { _id: '1', input: values } });
   };
 
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
   };
-  const handleChange = change => {
-    console.log('handleChange:', change);
-  };
 
-  const onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
+  const addFeeling = async () => {
+    try {
+      await addCustomFeeling({
+        variables: { id: '1', input: { feeling: searchValue } }
+      });
+      await refreshAvailableFeelings();
+    } catch (errorAddFeeling) {
+      console.log('statusAddCustomFeeling', statusAddCustomFeeling.error);
+      console.log('error trying to add a custom feeling', errorAddFeeling);
+    }
   };
 
   return (
@@ -99,10 +115,18 @@ function uploadMood() {
                     mode="multiple"
                     style={{ width: '100%' }}
                     placeholder="Selecciona tus animos"
-                    onChange={handleChange}
+                    onSearch={value => setSearchValue(value)}
+                    notFoundContent={
+                      <p>
+                        Si no existe puedes{' '}
+                        <Button onClick={addFeeling}> agregarlo </Button>
+                      </p>
+                    }
                   >
-                    <Option value="felicidad">Felicidad</Option>
-                    <Option value="enojo">Enojo</Option>
+                    {data &&
+                      data.feelings.map(feeling => (
+                        <Option value={feeling}>{feeling}</Option>
+                      ))}
                   </Select>
                 </Form.Item>
 
@@ -113,10 +137,21 @@ function uploadMood() {
                     { required: true, message: 'Tenes que agregar una fecha' }
                   ]}
                 >
-                  <DatePicker defaultValue={moment()} onChange={onChangeDate} />
+                  <DatePicker defaultValue={moment()} />
                 </Form.Item>
-
-                <Form.Item label="Situacion" name="description">
+                <Form.Item
+                  label="Horario"
+                  name="hour"
+                  rules={[{ required: false }]}
+                >
+                  <RangePicker
+                    picker="time"
+                    placeholder={['Desde', 'Hasta']}
+                    use12Hours
+                    onChange={e => console.log(e)}
+                  />
+                </Form.Item>
+                <Form.Item label="Descripcion" name="description">
                   <TextArea rows={4} />
                 </Form.Item>
 

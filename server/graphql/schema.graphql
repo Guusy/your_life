@@ -1,19 +1,59 @@
+scalar Date
+
+enum Feelings {
+    SAD
+    HAPPY
+    ANGRY
+    DISAPPOINTED
+}
+
 type User {
-    id: ID
+    id: ID!
+    name: String
+    situations:[Situation]
+    edges:[Edge]
     moods: [Mood]
+    customFeelings: [String]
 }
 
 type Mood {
-    title: String
-    feelings: [String]
-    description: String
-    date: String
+    title: String!
+    feelings: [Feelings]!
+    description: String!
+    from: Date
+    to: Date
 }
 
+type Place {
+    name: String
+}
+
+type Situation {
+    title: String!
+    description: String!
+    place: Place!
+    from: Date
+    to: Date
+    moods:[Mood]
+    edge: EdgeOfLifeImpact
+}
+
+type Edge {
+    name:String
+}
+
+type EdgeOfLifeImpact {
+    edge: String
+    modifier: Int
+}
+
+# Query and mutations
 
 type Query {
     "User by id"
     getUser( id: ID!): User
+    "User custom feelings + standart feelings"
+    getUserAvailableFeelings( id: ID!): [String]
 }
 
 input AddMoodInput {
@@ -23,7 +63,13 @@ input AddMoodInput {
     date: String
 }
 
+input AddCustomFeeling {
+    feeling: String
+}
+
 type Mutation {
     "Add a mood"
     addMood(_id:ID!, input: AddMoodInput!): Mood
+    "Add custom feeling to the user"
+    addCustomFeeling(_id:ID!, input: AddCustomFeeling!): String
 }

@@ -13,16 +13,16 @@ import {
 import moment from 'moment';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import React, { useState } from 'react';
-import withApollo from '../src/lib/apollo';
+import withApollo from '../../src/lib/apollo';
 import {
   GET_USER_AVAILABLE_FEELINGS,
   ADD_MOOD,
   ADD_CUSTOM_FEELING_USER
-} from '../src/graphql/queries';
+} from '../../src/graphql/queries';
 import {
   AddCustomFeelingMutationVariables,
   GetUserAvailableFeelingsData
-} from '../src/graphql/API';
+} from '../../src/graphql/API';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -38,7 +38,7 @@ type Mood = {
 
   date: string;
 };
-function uploadMood() {
+function mood() {
   const [
     addMood,
     { loading: mutationLoading, error: mutationError }
@@ -171,4 +171,4 @@ function uploadMood() {
   );
 }
 
-export default withApollo({ ssr: true })(uploadMood);
+export default withApollo({ ssr: true })(mood);

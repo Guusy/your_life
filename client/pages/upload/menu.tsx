@@ -11,6 +11,10 @@ export default () => {
     Router.push('/upload/situation');
   }
 
+  function goToThinking() {
+    Router.push('/upload/thought');
+  }
+
   return (
     <div className="container">
       <Head>
@@ -27,6 +31,9 @@ export default () => {
         >
           <Button type="primary" onClick={goToUploadMood}>
             Humor
+          </Button>
+          <Button type="primary" onClick={goToThinking}>
+            Pensamiento
           </Button>
           <Button type="primary" onClick={goToUploadSituation}>
             Situacion

@@ -90,7 +90,6 @@ function mood() {
             <Col span={24}>
               <Form
                 name="basic"
-                initialValues={{ remember: true }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
               >

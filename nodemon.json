@@ -1,0 +1,6 @@
+{
+  "watch": ["server"],
+  "ext": "ts",
+  "ignore": ["src/public"],
+  "exec": "NODE_ENV=local ts-node index.js"
+}

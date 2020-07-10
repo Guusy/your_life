@@ -13,12 +13,22 @@ export const ADD_CUSTOM_FEELING_USER = gql`
 `;
 
 export const ADD_MOOD = gql`
-  mutation AddMood($_id: ID!, $input: AddMoodInput!) {
-    addMood(_id: $_id, input: $input) {
+  mutation AddMood($id: ID!, $input: AddMoodInput!) {
+    addMood(_id: $id, input: $input) {
       title
       feelings
       description
       date
+    }
+  }
+`;
+
+export const ADD_THOUGHT = gql`
+  mutation AddThought($id: ID!, $input: AddThoughtInput!) {
+    addThought(_id: $id, input: $input) {
+      title
+      feelings
+      description
     }
   }
 `;

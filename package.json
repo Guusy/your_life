@@ -6,7 +6,7 @@
     "lint": "eslint --ext .js,.tsx .",
     "lint:fix": "eslint --fix --ext .js,.tsx .",
     "test": "jest",
-    "local": "NODE_ENV=local ts-node index.js",
+    "local": "nodemon --config nodemon.json",
     "dev": "NODE_ENV=development node index.js",
     "build": "next build ./client",
     "start": "cross-env NODE_ENV=production node index.js"
@@ -70,6 +70,7 @@
     "eslint-plugin-react-hooks": "^1.4.0",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
     "prettier": "^1.16.4",
     "react-test-renderer": "^16.13.1",
     "ts-node": "^8.10.2",

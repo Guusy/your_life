@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import withApollo from '../src/lib/apollo';
 import { GET_USER } from '../src/graphql/queries';
 import ThoughtsView from '../src/components/thoughtsView/ThoughtsView';
+import Calendar from '../src/components/calendar/Calendar';
 
 function Home() {
   const { loading: queryLoading, error: queryError, data } = useQuery(
@@ -27,6 +28,8 @@ function Home() {
 
             <h4>Pensamientos</h4>
             <ThoughtsView thoughts={data.getUser.thoughts} />
+
+            <Calendar thoughts={data.getUser.thoughts} />
           </div>
         )}
       </main>

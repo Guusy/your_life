@@ -5,10 +5,8 @@ import {
   AddCustomFeelingMutationVariables,
   GetUserAvailableFeelingsData
 } from '../../graphql/API';
-import {
-  ADD_CUSTOM_FEELING_USER,
-  GET_USER_AVAILABLE_FEELINGS
-} from '../../graphql/queries';
+import { GET_USER_AVAILABLE_FEELINGS } from '../../graphql/queries';
+import { ADD_CUSTOM_FEELING_USER } from '../../graphql/mutations';
 
 const { Option } = Select;
 

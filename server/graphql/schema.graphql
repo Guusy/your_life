@@ -22,6 +22,7 @@ type Thought {
     title: String!
     description: String!
     feelings: [String]!
+    date: String!
 }
 
 type Place {
@@ -66,6 +67,7 @@ input AddThoughtInput {
     title: String!
     feelings: [String]!
     description: String!
+    date: String!
 }
 
 input AddCustomFeeling {

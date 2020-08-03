@@ -1,26 +1,15 @@
 import Head from 'next/head';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 import withApollo from '../src/lib/apollo';
+import { GET_USER } from '../src/graphql/queries';
+import ThoughtsView from '../src/components/thoughtsView/ThoughtsView';
 
-const GET_USER = gql`
-  query getUser($id: ID!) {
-    getUser(id: $id) {
-      id
-      moods {
-        title
-        feelings
-        description
-        date
-      }
-    }
-  }
-`;
 function Home() {
   const { loading: queryLoading, error: queryError, data } = useQuery(
     GET_USER,
     { variables: { id: '1' } }
   );
+
   return (
     <div className="container">
       <Head>
@@ -33,9 +22,11 @@ function Home() {
         {data && (
           <div>
             <h4>Animos:</h4>
-            {data.getUser.moods.map(mood => (
-              <Mood {...mood} />
-            ))}
+            {data.getUser.moods &&
+              data.getUser.moods.map(mood => <Mood {...mood} />)}
+
+            <h4>Pensamientos</h4>
+            <ThoughtsView thoughts={data.getUser.thoughts} />
           </div>
         )}
       </main>

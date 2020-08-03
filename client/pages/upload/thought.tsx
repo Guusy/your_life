@@ -1,11 +1,12 @@
 import Head from 'next/head';
 import { useMutation } from '@apollo/react-hooks';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, DatePicker } from 'antd';
 import React from 'react';
-import { ADD_THOUGHT } from '../../src/graphql/queries';
+import moment from 'moment';
 import { AddThoughtMutationVariables } from '../../src/graphql/API';
 import FeelingsSelect from '../../src/components/feelingsSelect/FeelingsSelect';
 import withApollo from '../../src/lib/apollo';
+import { ADD_THOUGHT } from '../../src/graphql/mutations';
 
 const { TextArea } = Input;
 
@@ -17,7 +18,13 @@ const Thought = () => {
 
   const onFinish = async values => {
     try {
-      await addThought({ variables: { id: '1', input: values } });
+      const { date = moment() } = values;
+      await addThought({
+        variables: {
+          id: '1',
+          input: { ...values, date: date.format('DD-MM-YYYY') }
+        }
+      });
       message.success('Se agrego con exito su pensamiento', 2.5);
     } catch (addThoughtError) {
       console.log('addThoughtError', addThoughtError);
@@ -42,8 +49,6 @@ const Thought = () => {
             <Input placeholder="Titulo" />
           </Form.Item>
 
-          <FeelingsSelect />
-
           <Form.Item
             label="Descripcion"
             name="description"
@@ -52,6 +57,12 @@ const Thought = () => {
             ]}
           >
             <TextArea rows={4} />
+          </Form.Item>
+
+          <FeelingsSelect />
+
+          <Form.Item label="Fecha" name="date">
+            <DatePicker defaultValue={moment()} />
           </Form.Item>
 
           <Form.Item style={{ textAlign: 'center' }}>

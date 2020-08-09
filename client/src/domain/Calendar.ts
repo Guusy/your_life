@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Data } from 'react-minimal-pie-chart/types/commonTypes';
 import Thought from './Thought';
 import getMostFrequentInAList from '../utils/getMostFrequentInAList';
 import getDaysOfTheWeek from '../utils/getDaysOfTheWeek';
@@ -36,6 +37,27 @@ export default class Calendar {
       allFeelings = [...allFeelings, ...thought.feelings];
     });
     return Array.from(new Set(allFeelings));
+  }
+
+  getListFeelingFromPieChart(range: RangeFilter): Data {
+    let allFeelings = [];
+    this.thoughts.forEach(thought => {
+      allFeelings = [...allFeelings, ...thought.feelings];
+    });
+    const count = {};
+    allFeelings.forEach(i => {
+      count[i] = (count[i] || 0) + 1;
+    });
+
+    return Object.keys(count).map(key => {
+      return {
+        title: key,
+        value: count[key],
+        color: `#${Math.random()
+          .toString(16)
+          .substr(-6)}`
+      };
+    });
   }
 
   getThePrincipalFeelingOf(range: RangeFilter): string {

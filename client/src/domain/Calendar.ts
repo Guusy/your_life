@@ -3,6 +3,7 @@ import { Data } from 'react-minimal-pie-chart/types/commonTypes';
 import Thought from './Thought';
 import getMostFrequentInAList from '../utils/getMostFrequentInAList';
 import getDaysOfTheWeek from '../utils/getDaysOfTheWeek';
+import getDaysArrayByMonth from '../utils/getDaysOfTheMonth';
 
 export enum RangeFilter {
   week = 'week',
@@ -65,7 +66,16 @@ export default class Calendar {
   }
 
   getDays(range: RangeFilter): moment.Moment[] {
-    return getDaysOfTheWeek();
+    if (range === RangeFilter.week) {
+      return getDaysOfTheWeek();
+    }
+    return getDaysArrayByMonth();
+  }
+
+  getThoughtsOf(date: moment.Moment): Thought[] {
+    return this.thoughts.filter(
+      thought => thought.date === date.format('DD-MM-YYYY')
+    );
   }
 
   static getMonthName(number: number) {

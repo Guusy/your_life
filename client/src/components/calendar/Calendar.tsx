@@ -69,11 +69,15 @@ export default ({ thoughts }: CalendarProps) => {
         {calendar.getThePrincipalFeelingOf(rangeFilter)}
       </p>
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {calendar.getDays(rangeFilter).map(day => (
-          <div style={{ border: '1px solid black', padding: '1em' }}>
-            {day.day() + 1} de {Calendar.getMonthName(day.month())}
-          </div>
-        ))}
+        {calendar.getDays(rangeFilter).map(day => {
+          const dayThoughts = calendar.getThoughtsOf(day);
+          return (
+            <div style={{ border: '1px solid black', padding: '1em' }}>
+              {day.date()} de {Calendar.getMonthName(day.month())}
+              <p>Pensamientos: {dayThoughts.length}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

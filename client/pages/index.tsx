@@ -20,7 +20,7 @@ function Home() {
         <h1 className="title">Gonzalo</h1>
         {queryLoading && <p>Cargando tu información</p>}
         {queryError && <p>Hubo un error cargando tu información</p>}
-        {data && (
+        {data && data.getUser && (
           <div>
             <h4>Animos:</h4>
             {data.getUser.moods &&

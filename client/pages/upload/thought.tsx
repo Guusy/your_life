@@ -1,16 +1,25 @@
 import Head from 'next/head';
-import { useMutation } from '@apollo/react-hooks';
-import { Form, Input, Button, message, DatePicker } from 'antd';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { Form, Input, Button, message, DatePicker, Select } from 'antd';
 import React from 'react';
 import moment from 'moment';
-import { AddThoughtMutationVariables } from '../../src/graphql/API';
+import {
+  AddThoughtMutationVariables,
+  GetUserAvailableEdges
+} from '../../src/graphql/API';
 import FeelingsSelect from '../../src/components/feelingsSelect/FeelingsSelect';
 import withApollo from '../../src/lib/apollo';
 import { ADD_THOUGHT } from '../../src/graphql/mutations';
+import { GET_USER_AVAILABLE_EDGES } from '../../src/graphql/queries';
+
+const { Option } = Select;
 
 const { TextArea } = Input;
 
 const Thought = () => {
+  const { data } = useQuery<GetUserAvailableEdges>(GET_USER_AVAILABLE_EDGES, {
+    variables: { id: '1' }
+  });
   const [addThought, { loading }] = useMutation<
     null,
     AddThoughtMutationVariables
@@ -18,11 +27,16 @@ const Thought = () => {
 
   const onFinish = async values => {
     try {
-      const { date = moment() } = values;
+      const { date = moment(), edges } = values;
+      // TODO: OMG QUE ES ESTO CAMBIALO POR FAVOR
+      const newEdges = edges.map(edge => {
+        const { id, label } = data.edges.find(fullEdge => edge === fullEdge.id);
+        return { id, label };
+      });
       await addThought({
         variables: {
           id: '1',
-          input: { ...values, date: date.format('DD-MM-YYYY') }
+          input: { ...values, edges: newEdges, date: date.format('DD-MM-YYYY') }
         }
       });
       message.success('Se agrego con exito su pensamiento', 2.5);
@@ -58,6 +72,26 @@ const Thought = () => {
           >
             <TextArea rows={4} />
           </Form.Item>
+
+          {data && data.edges && (
+            <Form.Item
+              label="Sobre que:"
+              name="edges"
+              rules={[
+                { required: true, message: 'Tenes que agregar sobre que es' }
+              ]}
+            >
+              <Select
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="Selecciona sobre que estas pensando"
+              >
+                {data.edges.map(option => (
+                  <Option value={option.id}>{option.label}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
 
           <FeelingsSelect />
 

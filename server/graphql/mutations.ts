@@ -17,6 +17,11 @@ interface AddThought {
   input: Thought;
 }
 
+interface CreateEdge {
+  _id: string;
+  input: { label: string };
+}
+
 export default {
   addMood: (root, { _id, input }: addMoodArgs): Promise<Mood> => {
     return MoodRepository.addMood(_id, input);
@@ -27,5 +32,9 @@ export default {
   },
   addThought(root, { _id, input }: AddThought): Promise<any> {
     return UserRepository.addThought(_id, input).then(_ => input);
+  },
+  createEdge(root, { _id, input }: CreateEdge) : Promise<any> {
+    const newEdge = { ...input,id: input.label.toLowerCase()}
+    return UserRepository.createEdge(_id, newEdge).then(() => newEdge)
   }
 };

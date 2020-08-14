@@ -40,7 +40,8 @@ type Situation {
 }
 
 type Edge {
-    name:String
+    id: String
+    label:String
 }
 
 type EdgeOfLifeImpact {
@@ -55,6 +56,8 @@ type Query {
     getUser( id: ID!): User
     "User custom feelings + standart feelings"
     getUserAvailableFeelings( id: ID!): [String]
+    "User edges"
+    getUserAvailableEdges( id: ID!): [Edge]
 }
 
 input AddMoodInput {
@@ -63,9 +66,20 @@ input AddMoodInput {
     description: String!
     date: String
 }
+
+input EdgeInput {
+    id: String!
+    label:String!
+}
+
+input CreateEdgeInput {
+    label:String!
+}
+
 input AddThoughtInput {
     title: String!
     feelings: [String]!
+    edges: [EdgeInput]!
     description: String!
     date: String!
 }
@@ -81,4 +95,6 @@ type Mutation {
     addThought(_id:ID!, input: AddThoughtInput!): Thought
     "Add custom feeling to the user"
     addCustomFeeling(_id:ID!, input: AddCustomFeeling!): String
+    "Add a thought"
+    createEdge(_id:ID!, input: CreateEdgeInput!): Edge
 }

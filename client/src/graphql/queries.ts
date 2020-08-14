@@ -6,6 +6,12 @@ export const GET_USER_AVAILABLE_FEELINGS = gql`
   }
 `;
 
+export const GET_USER_AVAILABLE_EDGES = gql`
+  query getUserAvailableFeelings($id: ID!) {
+    edges: getUserAvailableEdges(id: $id) { id, label } 
+  }
+`;
+
 export const GET_USER = gql`
   query getUser($id: ID!) {
     getUser(id: $id) {

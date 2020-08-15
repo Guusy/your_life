@@ -5,7 +5,6 @@ import graphqlHTTP from 'express-graphql';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { makeExecutableSchema } from 'graphql-tools';
-import { Request, Response } from 'express';
 import resolvers from './graphql/resolvers';
 import config from '../config';
 import { Mongo } from './db/mongo';
@@ -39,9 +38,4 @@ module.exports = (app: any, server: any) => {
   );
 
   Mongo.connect().then(() => console.log('Mongo instance is ok'));
-
-  // Passport Routes
-  server.get('/api/quetto', (req: Request, res: Response) => {
-    return res.json({ name: 'pepe' });
-  });
 };

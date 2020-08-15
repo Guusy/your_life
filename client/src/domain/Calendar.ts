@@ -40,7 +40,7 @@ export default class Calendar {
     return Array.from(new Set(allFeelings));
   }
 
-  getListFeelingFromPieChart(range: RangeFilter): Data {
+  getListFeelingFromPieChart(range: RangeFilter = null): Data {
     let allFeelings = [];
     this.thoughts.forEach(thought => {
       allFeelings = [...allFeelings, ...thought.feelings];

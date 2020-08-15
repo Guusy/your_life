@@ -1,7 +1,7 @@
-
 export class Edge {
-  id: string
-  label: string
+  id: string;
+
+  label: string;
 }
 
 export default class Thought {

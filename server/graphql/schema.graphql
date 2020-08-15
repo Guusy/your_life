@@ -49,6 +49,10 @@ type EdgeOfLifeImpact {
     modifier: Int
 }
 
+type UserDate {
+    thoughts: [Thought]
+}
+
 # Query and mutations
 
 type Query {
@@ -58,6 +62,8 @@ type Query {
     getUserAvailableFeelings( id: ID!): [String]
     "User edges"
     getUserAvailableEdges( id: ID!): [Edge]
+    "Get date"
+    getDate( id: ID!, date: String): UserDate
 }
 
 input AddMoodInput {

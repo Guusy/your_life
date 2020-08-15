@@ -8,7 +8,10 @@ export const GET_USER_AVAILABLE_FEELINGS = gql`
 
 export const GET_USER_AVAILABLE_EDGES = gql`
   query getUserAvailableFeelings($id: ID!) {
-    edges: getUserAvailableEdges(id: $id) { id, label } 
+    edges: getUserAvailableEdges(id: $id) {
+      id
+      label
+    }
   }
 `;
 
@@ -26,6 +29,18 @@ export const GET_USER = gql`
         description
         feelings
         date
+      }
+    }
+  }
+`;
+
+export const GET_USER_DATE = gql`
+  query GetDate($idUser: ID!, $date: String) {
+    date: getDate(id: $idUser, date: $date) {
+      thoughts {
+        title
+        description
+        feelings
       }
     }
   }

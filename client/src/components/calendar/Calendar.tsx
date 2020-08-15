@@ -1,8 +1,9 @@
 import { Radio } from 'antd';
 import { useState } from 'react';
-import { PieChart } from 'react-minimal-pie-chart';
+import Link from 'next/link';
 import Calendar, { RangeFilter } from '../../domain/Calendar';
 import Thought from '../../domain/Thought';
+import FeelingsPieChart from '../feelingsPieChart/FeelingsPieChart';
 
 interface CalendarProps {
   thoughts: Thought[];
@@ -25,45 +26,7 @@ export default ({ thoughts }: CalendarProps) => {
         <Radio.Button value={RangeFilter.month}>Este mes</Radio.Button>
         <Radio.Button value={RangeFilter.year}>Este año</Radio.Button>
       </Radio.Group>
-      <div style={{ display: 'flex' }}>
-        <div style={{ maxWidth: '200px' }}>
-          <PieChart
-            style={{
-              fontFamily:
-                '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
-              fontSize: '6px'
-            }}
-            radius={PieChart.defaultProps.radius - 6}
-            lineWidth={60}
-            animate
-            label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
-            labelPosition={100 - 60 / 2}
-            labelStyle={{
-              fill: '#fff',
-              opacity: 0.75,
-              pointerEvents: 'none'
-            }}
-            data={pieChartData}
-          />
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div>
-            {pieChartData.map(feeling => (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div
-                  style={{
-                    height: '10px',
-                    width: '10px',
-                    backgroundColor: feeling.color,
-                    marginRight: '3px'
-                  }}
-                />
-                {feeling.title} : {feeling.value}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <FeelingsPieChart data={pieChartData} />
       <p>
         Tu sentimiento principal fue:{' '}
         {calendar.getThePrincipalFeelingOf(rangeFilter)}
@@ -72,10 +35,18 @@ export default ({ thoughts }: CalendarProps) => {
         {calendar.getDays(rangeFilter).map(day => {
           const dayThoughts = calendar.getThoughtsOf(day);
           return (
-            <div style={{ border: '1px solid black', padding: '1em' }}>
-              {day.date()} de {Calendar.getMonthName(day.month())}
-              <p>Pensamientos: {dayThoughts.length}</p>
-            </div>
+            <Link href={`/day/${day.format('DD-MM-YYYY')}`}>
+              <div
+                style={{
+                  border: '1px solid black',
+                  padding: '1em',
+                  cursor: 'pointer'
+                }}
+              >
+                {day.date()} de {Calendar.getMonthName(day.month())}
+                <p>Pensamientos: {dayThoughts.length}</p>
+              </div>
+            </Link>
           );
         })}
       </div>

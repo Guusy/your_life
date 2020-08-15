@@ -42,9 +42,7 @@ const Config = () => {
     <div>
       <div>
         <h4>Tus aristas de la vida</h4>
-        {edgesData.edges.map(edge => (
-          <p> {edge.label}</p>
-        ))}
+        {edgesData.edges && edgesData.edges.map(edge => <p> {edge.label}</p>)}
         {addNewOne ? (
           <Form name="basic" onFinish={onFinish}>
             <Form.Item

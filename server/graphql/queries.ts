@@ -1,6 +1,7 @@
 import UserRepository from '../repositories/UserRepository';
 import User from '../domain/User';
 import { UserDate } from '../domain/UserDate';
+import Situation from '../domain/Situation';
 
 export default {
   getUser: (root, { id }) => UserRepository.getById(id),
@@ -32,5 +33,10 @@ export default {
   getDate: async (root, { id, date }): Promise<UserDate> => {
     const user: User = await UserRepository.getById(id);
     return { thoughts: user.thoughts.filter(thought => thought.date === date) };
+  },
+  getUserSituations: async (root, { id }): Promise<Situation[]> => {
+    // TODO: normalizar data entre la query y la mutation
+    const user: User = await UserRepository.getById(id);
+    return user.situations;
   }
 };

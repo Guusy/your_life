@@ -2,6 +2,7 @@ import Mood from '../domain/Mood';
 import MoodRepository from '../repositories/MoodRepository';
 import UserRepository from '../repositories/UserRepository';
 import Thought from '../domain/Thought';
+import Situation from '../domain/Situation';
 
 interface addMoodArgs {
   _id: string;
@@ -22,6 +23,11 @@ interface CreateEdge {
   input: { label: string };
 }
 
+interface AddSituation {
+  _id: string;
+  input: Situation;
+}
+
 export default {
   addMood: (root, { _id, input }: addMoodArgs): Promise<Mood> => {
     return MoodRepository.addMood(_id, input);
@@ -33,8 +39,11 @@ export default {
   addThought(root, { _id, input }: AddThought): Promise<any> {
     return UserRepository.addThought(_id, input).then(_ => input);
   },
-  createEdge(root, { _id, input }: CreateEdge) : Promise<any> {
-    const newEdge = { ...input,id: input.label.toLowerCase()}
-    return UserRepository.createEdge(_id, newEdge).then(() => newEdge)
+  createEdge(root, { _id, input }: CreateEdge): Promise<any> {
+    const newEdge = { ...input, id: input.label.toLowerCase() };
+    return UserRepository.createEdge(_id, newEdge).then(() => newEdge);
+  },
+  addSituation(root, { _id, input }: AddSituation): Promise<any> {
+    return UserRepository.addSituation(_id, input);
   }
 };

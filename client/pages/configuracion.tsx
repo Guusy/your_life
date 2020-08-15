@@ -21,7 +21,6 @@ const Config = () => {
 
   const [addNewOne, setAddNewOne] = useState(false);
   const onFinish = async values => {
-    console.log('values', values);
     try {
       await createEdge({
         variables: {
@@ -41,6 +40,7 @@ const Config = () => {
   return (
     <div>
       <div>
+        <h2>Configuración</h2>
         <h4>Tus aristas de la vida</h4>
         {edgesData.edges && edgesData.edges.map(edge => <p> {edge.label}</p>)}
         {addNewOne ? (

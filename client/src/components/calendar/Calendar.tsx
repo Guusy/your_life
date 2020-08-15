@@ -31,7 +31,9 @@ export default ({ thoughts }: CalendarProps) => {
         Tu sentimiento principal fue:{' '}
         {calendar.getThePrincipalFeelingOf(rangeFilter)}
       </p>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      <div
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+      >
         {calendar.getDays(rangeFilter).map(day => {
           const dayThoughts = calendar.getThoughtsOf(day);
           return (
@@ -40,7 +42,9 @@ export default ({ thoughts }: CalendarProps) => {
                 style={{
                   border: '1px solid black',
                   padding: '1em',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  borderRadius: '5px',
+                  margin: '0.3em'
                 }}
               >
                 {day.date()} de {Calendar.getMonthName(day.month())}

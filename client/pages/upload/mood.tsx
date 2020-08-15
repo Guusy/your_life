@@ -14,15 +14,12 @@ import moment from 'moment';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import React, { useState } from 'react';
 import withApollo from '../../src/lib/apollo';
-import {
-  GET_USER_AVAILABLE_FEELINGS,
-  ADD_MOOD,
-  ADD_CUSTOM_FEELING_USER
-} from '../../src/graphql/queries';
+import { GET_USER_AVAILABLE_FEELINGS } from '../../src/graphql/queries';
 import {
   AddCustomFeelingMutationVariables,
   GetUserAvailableFeelingsData
 } from '../../src/graphql/API';
+import { ADD_CUSTOM_FEELING_USER, ADD_MOOD } from '../../src/graphql/mutations';
 
 const { Option } = Select;
 const { TextArea } = Input;

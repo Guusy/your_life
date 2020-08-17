@@ -18,7 +18,7 @@ import { GET_USER_AVAILABLE_FEELINGS } from '../../src/graphql/queries';
 import {
   AddCustomFeelingMutationVariables,
   GetUserAvailableFeelingsData
-} from '../../src/graphql/API';
+} from '../../src/graphql/API_2';
 import { ADD_CUSTOM_FEELING_USER, ADD_MOOD } from '../../src/graphql/mutations';
 
 const { Option } = Select;

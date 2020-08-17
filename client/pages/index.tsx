@@ -1,14 +1,15 @@
 import Head from 'next/head';
-import { useQuery } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 import withApollo from '../src/lib/apollo';
-import { GET_USER } from '../src/graphql/queries';
 import Calendar from '../src/components/calendar/Calendar';
+import { useGetUserQuery } from '../src/graphql/API';
 
 function Home() {
-  const { loading: queryLoading, error: queryError, data } = useQuery(
-    GET_USER,
-    { variables: { id: '1' } }
-  );
+  const client = useApolloClient();
+  const { loading: queryLoading, error: queryError, data } = useGetUserQuery({
+    variables: { id: '1' },
+    client
+  });
 
   return (
     <div className="container">

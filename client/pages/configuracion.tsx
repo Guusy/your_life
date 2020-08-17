@@ -4,7 +4,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import {
   GetUserAvailableEdges,
   CreateEdgeMutationVariables
-} from '../src/graphql/API';
+} from '../src/graphql/API_2';
 import withApollo from '../src/lib/apollo';
 
 import { GET_USER_AVAILABLE_EDGES } from '../src/graphql/queries';

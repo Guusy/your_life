@@ -9,7 +9,8 @@
     "local": "nodemon --config nodemon.json",
     "dev": "NODE_ENV=development node index.js",
     "build": "next build ./client",
-    "start": "cross-env NODE_ENV=production node index.js"
+    "start": "cross-env NODE_ENV=production node index.js",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
@@ -46,6 +47,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
+    "@graphql-codegen/cli": "1.17.8",
     "@testing-library/react": "^10.2.1",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
@@ -76,6 +78,9 @@
     "prettier": "^1.16.4",
     "react-test-renderer": "^16.13.1",
     "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "@graphql-codegen/typescript": "1.17.8",
+    "@graphql-codegen/typescript-operations": "1.17.8",
+    "@graphql-codegen/typescript-react-apollo": "2.0.6"
   }
 }

@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import {
   AddCustomFeelingMutationVariables,
   GetUserAvailableFeelingsData
-} from '../../graphql/API';
+} from '../../graphql/API_2';
 import { GET_USER_AVAILABLE_FEELINGS } from '../../graphql/queries';
 import { ADD_CUSTOM_FEELING_USER } from '../../graphql/mutations';
 

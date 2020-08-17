@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { Data } from 'react-minimal-pie-chart/types/commonTypes';
-import Thought from './Thought';
 import getMostFrequentInAList from '../utils/getMostFrequentInAList';
 import getDaysOfTheWeek from '../utils/getDaysOfTheWeek';
 import getDaysArrayByMonth from '../utils/getDaysOfTheMonth';
+import { Thought } from '../graphql/API';
 
 export enum RangeFilter {
   week = 'week',

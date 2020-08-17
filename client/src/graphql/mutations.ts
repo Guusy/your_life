@@ -12,7 +12,6 @@ export const ADD_MOOD = gql`
       title
       feelings
       description
-      date
     }
   }
 `;

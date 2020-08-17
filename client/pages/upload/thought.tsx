@@ -6,7 +6,7 @@ import moment from 'moment';
 import {
   AddThoughtMutationVariables,
   GetUserAvailableEdges
-} from '../../src/graphql/API';
+} from '../../src/graphql/API_2';
 import FeelingsSelect from '../../src/components/feelingsSelect/FeelingsSelect';
 import withApollo from '../../src/lib/apollo';
 import { ADD_THOUGHT } from '../../src/graphql/mutations';

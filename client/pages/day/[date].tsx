@@ -1,19 +1,24 @@
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/react-hooks';
 import React, { useState } from 'react';
 import { Button } from 'antd';
-import { GetUserDate } from '../../src/graphql/API';
-import { GET_USER_DATE } from '../../src/graphql/queries';
+import { useApolloClient } from '@apollo/react-hooks';
 import withApollo from '../../src/lib/apollo';
 import ThoughtsView from '../../src/components/thoughtsView/ThoughtsView';
 import FeelingsPieChart from '../../src/components/feelingsPieChart/FeelingsPieChart';
 import Calendar from '../../src/domain/Calendar';
+import { useGetDateQuery } from '../../src/graphql/API';
 
 const Date = () => {
   const router = useRouter();
   const { date } = router.query;
-  const { data, loading } = useQuery<GetUserDate>(GET_USER_DATE, {
-    variables: { idUser: '1', date }
+  const client = useApolloClient();
+
+  const { data, loading } = useGetDateQuery({
+    variables: {
+      idUser: '1',
+      date: date.toString()
+    },
+    client
   });
   const [viewThoughts, setViewThoughts] = useState<boolean>(false);
 

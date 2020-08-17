@@ -1,13 +1,13 @@
 import { gql } from 'apollo-boost';
 
 export const GET_USER_AVAILABLE_FEELINGS = gql`
-  query getUserAvailableFeelings($id: ID!) {
+  query GetUserAvailableFeelings($id: ID!) {
     feelings: getUserAvailableFeelings(id: $id)
   }
 `;
 
 export const GET_USER_AVAILABLE_EDGES = gql`
-  query getUserAvailableFeelings($id: ID!) {
+  query GetUserAvailableEdges($id: ID!) {
     edges: getUserAvailableEdges(id: $id) {
       id
       label
@@ -41,6 +41,7 @@ export const GET_USER_DATE = gql`
         title
         description
         feelings
+        date
       }
     }
   }

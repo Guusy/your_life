@@ -45,5 +45,6 @@ export default {
   },
   addSituation(root, { _id, input }: AddSituation): Promise<any> {
     return UserRepository.addSituation(_id, input);
+    // TODO: devolver el objeto creado boludo
   }
 };

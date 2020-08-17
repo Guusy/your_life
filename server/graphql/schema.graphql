@@ -52,6 +52,7 @@ type EdgeOfLifeImpact {
 
 type UserDate {
     thoughts: [Thought]
+    situations: [Situation]
 }
 
 # Query and mutations

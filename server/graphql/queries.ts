@@ -32,7 +32,10 @@ export default {
   },
   getDate: async (root, { id, date }): Promise<UserDate> => {
     const user: User = await UserRepository.getById(id);
-    return { thoughts: user.thoughts.filter(thought => thought.date === date) };
+    return {
+      thoughts: user.thoughts.filter(thought => thought.date === date),
+      situations: user.situations.filter(situation => situation.from === date)
+    };
   },
   getUserSituations: async (root, { id }): Promise<Situation[]> => {
     // TODO: normalizar data entre la query y la mutation

@@ -1,24 +1,22 @@
 import Head from 'next/head';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { Form, Input, Button, message, DatePicker, Select } from 'antd';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import { Form, Input, Button, message, DatePicker } from 'antd';
 import React from 'react';
 import moment from 'moment';
-import {
-  AddThoughtMutationVariables,
-  GetUserAvailableEdges
-} from '../../src/graphql/API_2';
+import { AddThoughtMutationVariables } from '../../src/graphql/API_2';
 import FeelingsSelect from '../../src/components/feelingsSelect/FeelingsSelect';
 import withApollo from '../../src/lib/apollo';
 import { ADD_THOUGHT } from '../../src/graphql/mutations';
-import { GET_USER_AVAILABLE_EDGES } from '../../src/graphql/queries';
-
-const { Option } = Select;
+import EdgesSelect from '../../src/components/edgesSelect/EdgesSelect';
+import { useGetUserAvailableEdgesQuery } from '../../src/graphql/API';
 
 const { TextArea } = Input;
 
 const Thought = () => {
-  const { data } = useQuery<GetUserAvailableEdges>(GET_USER_AVAILABLE_EDGES, {
-    variables: { id: '1' }
+  const client = useApolloClient();
+  const { data } = useGetUserAvailableEdgesQuery({
+    variables: { id: '1' },
+    client
   });
   const [addThought, { loading }] = useMutation<
     null,
@@ -73,25 +71,7 @@ const Thought = () => {
             <TextArea rows={4} />
           </Form.Item>
 
-          {data && data.edges && (
-            <Form.Item
-              label="Sobre que:"
-              name="edges"
-              rules={[
-                { required: true, message: 'Tenes que agregar sobre que es' }
-              ]}
-            >
-              <Select
-                mode="multiple"
-                style={{ width: '100%' }}
-                placeholder="Selecciona sobre que estas pensando"
-              >
-                {data.edges.map(option => (
-                  <Option value={option.id}>{option.label}</Option>
-                ))}
-              </Select>
-            </Form.Item>
-          )}
+          <EdgesSelect />
 
           <FeelingsSelect />
 

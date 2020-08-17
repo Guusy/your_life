@@ -43,6 +43,19 @@ export const GET_USER_DATE = gql`
         feelings
         date
       }
+      situations {
+        title
+        description
+        from
+        place {
+          id
+        }
+        feelings
+        edges {
+          edge
+          modifier
+        }
+      }
     }
   }
 `;

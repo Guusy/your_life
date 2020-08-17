@@ -1,4 +1,4 @@
-import {ApolloClient, gql} from '@apollo/client';
+import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -73,6 +73,7 @@ export type EdgeOfLifeImpact = {
 export type UserDate = {
   __typename?: 'UserDate';
   thoughts?: Maybe<Array<Maybe<Thought>>>;
+  situations?: Maybe<Array<Maybe<Situation>>>;
 };
 
 export type Query = {
@@ -259,6 +260,20 @@ export type AddThoughtMutation = (
   )> }
 );
 
+export type AddSituationMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: AddSituationInput;
+}>;
+
+
+export type AddSituationMutation = (
+  { __typename?: 'Mutation' }
+  & { addSituation?: Maybe<(
+    { __typename?: 'Situation' }
+    & Pick<Situation, 'title'>
+  )> }
+);
+
 export type GetUserAvailableFeelingsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -315,6 +330,16 @@ export type GetDateQuery = (
     & { thoughts?: Maybe<Array<Maybe<(
       { __typename?: 'Thought' }
       & Pick<Thought, 'title' | 'description' | 'feelings' | 'date'>
+    )>>>, situations?: Maybe<Array<Maybe<(
+      { __typename?: 'Situation' }
+      & Pick<Situation, 'title' | 'description' | 'from' | 'feelings'>
+      & { place: (
+        { __typename?: 'Place' }
+        & Pick<Place, 'id'>
+      ), edges?: Maybe<Array<Maybe<(
+        { __typename?: 'EdgeOfLifeImpact' }
+        & Pick<EdgeOfLifeImpact, 'edge' | 'modifier'>
+      )>>> }
     )>>> }
   )> }
 );
@@ -455,6 +480,39 @@ export function useAddThoughtMutation(baseOptions?: Apollo.MutationHookOptions<A
 export type AddThoughtMutationHookResult = ReturnType<typeof useAddThoughtMutation>;
 export type AddThoughtMutationResult = Apollo.MutationResult<AddThoughtMutation>;
 export type AddThoughtMutationOptions = Apollo.BaseMutationOptions<AddThoughtMutation, AddThoughtMutationVariables>;
+export const AddSituationDocument = gql`
+    mutation AddSituation($id: ID!, $input: AddSituationInput!) {
+  addSituation(_id: $id, input: $input) {
+    title
+  }
+}
+    `;
+export type AddSituationMutationFn = Apollo.MutationFunction<AddSituationMutation, AddSituationMutationVariables>;
+
+/**
+ * __useAddSituationMutation__
+ *
+ * To run a mutation, you first call `useAddSituationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddSituationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addSituationMutation, { data, loading, error }] = useAddSituationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddSituationMutation(baseOptions?: Apollo.MutationHookOptions<AddSituationMutation, AddSituationMutationVariables>) {
+        return Apollo.useMutation<AddSituationMutation, AddSituationMutationVariables>(AddSituationDocument, baseOptions);
+      }
+export type AddSituationMutationHookResult = ReturnType<typeof useAddSituationMutation>;
+export type AddSituationMutationResult = Apollo.MutationResult<AddSituationMutation>;
+export type AddSituationMutationOptions = Apollo.BaseMutationOptions<AddSituationMutation, AddSituationMutationVariables>;
 export const GetUserAvailableFeelingsDocument = gql`
     query GetUserAvailableFeelings($id: ID!) {
   feelings: getUserAvailableFeelings(id: $id)
@@ -573,6 +631,19 @@ export const GetDateDocument = gql`
       feelings
       date
     }
+    situations {
+      title
+      description
+      from
+      place {
+        id
+      }
+      feelings
+      edges {
+        edge
+        modifier
+      }
+    }
   }
 }
     `;
@@ -584,7 +655,7 @@ export const GetDateDocument = gql`
  * When your component renders, `useGetDateQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
- * @param baseOptions?? options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
  * const { data, loading, error } = useGetDateQuery({
@@ -594,7 +665,7 @@ export const GetDateDocument = gql`
  *   },
  * });
  */
-export function useGetDateQuery(baseOptions?: { variables: { idUser: string; date: string }; client: ApolloClient<object> }) {
+export function useGetDateQuery(baseOptions?: Apollo.QueryHookOptions<GetDateQuery, GetDateQueryVariables>) {
         return Apollo.useQuery<GetDateQuery, GetDateQueryVariables>(GetDateDocument, baseOptions);
       }
 export function useGetDateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetDateQuery, GetDateQueryVariables>) {

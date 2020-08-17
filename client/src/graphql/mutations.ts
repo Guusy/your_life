@@ -16,7 +16,6 @@ export const ADD_MOOD = gql`
   }
 `;
 
-
 export const CREATE_EDGE = gql`
   mutation CreateEdge($id: ID!, $input: CreateEdgeInput!) {
     createEdge(_id: $id, input: $input) {
@@ -32,6 +31,14 @@ export const ADD_THOUGHT = gql`
       title
       feelings
       description
+    }
+  }
+`;
+
+export const ADD_SITUATION = gql`
+  mutation AddSituation($id: ID!, $input: AddSituationInput!) {
+    addSituation(_id: $id, input: $input) {
+      title
     }
   }
 `;

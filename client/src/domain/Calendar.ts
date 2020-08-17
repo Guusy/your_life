@@ -3,7 +3,7 @@ import { Data } from 'react-minimal-pie-chart/types/commonTypes';
 import getMostFrequentInAList from '../utils/getMostFrequentInAList';
 import getDaysOfTheWeek from '../utils/getDaysOfTheWeek';
 import getDaysArrayByMonth from '../utils/getDaysOfTheMonth';
-import { Thought } from '../graphql/API';
+import { Situation, Thought } from '../graphql/API';
 
 export enum RangeFilter {
   week = 'week',
@@ -28,8 +28,17 @@ const monthsMap = [
 export default class Calendar {
   thoughts: Thought[];
 
-  constructor({ thoughts }: { thoughts: Thought[] }) {
+  situations: Situation[];
+
+  constructor({
+    thoughts,
+    situations
+  }: {
+    thoughts: Thought[];
+    situations: Situation[];
+  }) {
     this.thoughts = thoughts;
+    this.situations = situations;
   }
 
   getAllFelingsOf(range: RangeFilter): string[] {
@@ -45,6 +54,11 @@ export default class Calendar {
     this.thoughts.forEach(thought => {
       allFeelings = [...allFeelings, ...thought.feelings];
     });
+
+    this.situations.forEach(situation => {
+      allFeelings = [...allFeelings, ...situation.feelings];
+    });
+
     const count = {};
     allFeelings.forEach(i => {
       count[i] = (count[i] || 0) + 1;

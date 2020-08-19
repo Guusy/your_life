@@ -30,6 +30,19 @@ export const GET_USER = gql`
         feelings
         date
       }
+      situations {
+        title
+        description
+        from
+        place {
+          id
+        }
+        feelings
+        edges {
+          edge
+          modifier
+        }
+      }
     }
   }
 `;
@@ -56,6 +69,28 @@ export const GET_USER_DATE = gql`
           modifier
         }
       }
+    }
+  }
+`;
+
+export const GET_USER_GOALS = gql`
+  query GetUserGoals($id: ID!) {
+    getUserGoals(id: $id) {
+      id
+      title
+      description
+      starter_day
+    }
+  }
+`;
+
+export const GET_USER_GOAL = gql`
+  query GetUserGoal($id: ID!, $goalId: ID!) {
+    getUserGoal(id: $id, goalId: $goalId) {
+      id
+      title
+      description
+      starter_day
     }
   }
 `;

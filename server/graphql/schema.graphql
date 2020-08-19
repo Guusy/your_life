@@ -38,6 +38,7 @@ type Situation {
     to: String
     feelings:[String]
     edges: [EdgeOfLifeImpact]
+    goalsModifiers: [Goal]
 }
 
 type Edge {
@@ -55,6 +56,18 @@ type UserDate {
     situations: [Situation]
 }
 
+type Goal {
+    id: String!
+    title: String!
+    description: String!
+    starter_day: String
+    modifiers: [GoalImpact]
+}
+
+type GoalImpact {
+    goal: String,
+    modifier: Int
+}
 # Query and mutations
 
 type Query {
@@ -68,6 +81,10 @@ type Query {
     getDate( id: ID!, date: String): UserDate
     "User situtations"
     getUserSituations( id: ID!): [Situation]
+    "User goals"
+    getUserGoals(id: ID!): [Goal]
+    "User goal"
+    getUserGoal(id: ID!, goalId: ID!): Goal
 }
 
 input AddMoodInput {
@@ -98,8 +115,8 @@ input PlaceInput {
     id: String
 }
 
-input EdgeOfLifeImpactInput {
-    edgeId: String,
+input GoalImpactInput {
+    goal: String,
     modifier: Int
 }
 
@@ -110,7 +127,13 @@ input AddSituationInput {
     from: String!
     to: String
     feelings:[String]
-    edges: [EdgeOfLifeImpactInput]
+    goalsModifiers: [GoalImpactInput]
+}
+
+input AddGoalInput {
+    title: String!
+    description: String!
+    starter_day: String!
 }
 
 input AddCustomFeeling {
@@ -128,4 +151,6 @@ type Mutation {
     createEdge(_id:ID!, input: CreateEdgeInput!): Edge
     "Add situation"
     addSituation(_id:ID!, input: AddSituationInput!): Situation
+    "Add goal"
+    addGoal(_id:ID!, input: AddGoalInput!): Goal
 }

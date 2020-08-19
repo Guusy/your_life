@@ -1,16 +1,27 @@
-import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Form, Row, Select } from 'antd';
 import React, { useState } from 'react';
+import { useApolloClient } from '@apollo/react-hooks';
+import { useGetUserGoalsQuery } from '../../graphql/API';
 
 const { Option } = Select;
+
+const modifiersOptions = [
+  { value: 1, label: 'flechita para arriba' },
+  { value: 0.5, label: 'flechita para arriba derecha' },
+  { value: 0, label: 'neutro' },
+  { value: -0.5, label: 'flechita para abajo derecha' },
+  { value: -1, label: 'flechita para abajo' }
+];
 export default () => {
-  // TODO :  obtener los goals de la API
+  const client = useApolloClient();
+  const { data } = useGetUserGoalsQuery({ variables: { id: '1' }, client });
   const [addOne, setAddone] = useState(false);
 
   return (
     <>
       {addOne ? (
-        <Row gutter={16}>
-          <Col span={6}>
+        <Row gutter={12}>
+          <Col span={12}>
             <Form.Item
               label="Meta"
               name="goal"
@@ -19,12 +30,13 @@ export default () => {
               ]}
             >
               <Select placeholder="Selecciona el lugar">
-                <Option value="lider_promotion">Promoción a lider</Option>
-                <Option value="bajar_peso">Bajar de peso</Option>
+                {data.getUserGoals.map(goal => (
+                  <Option value={goal.id}>{goal.title}</Option>
+                ))}
               </Select>
             </Form.Item>
           </Col>
-          <Col span={6}>
+          <Col span={12}>
             <Form.Item
               style={{ width: '100%' }}
               label="Modificador"
@@ -33,7 +45,11 @@ export default () => {
                 { required: true, message: 'Tenes que agregar un modificador' }
               ]}
             >
-              <Input placeholder="Modificador" />
+              <Select placeholder="Modificador">
+                {modifiersOptions.map(modifier => (
+                  <Option value={modifier.value}> {modifier.label}</Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
         </Row>

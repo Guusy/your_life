@@ -56,6 +56,7 @@ export type Situation = {
   to?: Maybe<Scalars['String']>;
   feelings?: Maybe<Array<Maybe<Scalars['String']>>>;
   edges?: Maybe<Array<Maybe<EdgeOfLifeImpact>>>;
+  goalsModifiers?: Maybe<Array<Maybe<Goal>>>;
 };
 
 export type Edge = {
@@ -76,6 +77,14 @@ export type UserDate = {
   situations?: Maybe<Array<Maybe<Situation>>>;
 };
 
+export type Goal = {
+  __typename?: 'Goal';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  description: Scalars['String'];
+  starter_day?: Maybe<Scalars['String']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   /** User by id */
@@ -88,6 +97,10 @@ export type Query = {
   getDate?: Maybe<UserDate>;
   /** User situtations */
   getUserSituations?: Maybe<Array<Maybe<Situation>>>;
+  /** User goals */
+  getUserGoals?: Maybe<Array<Maybe<Goal>>>;
+  /** User goal */
+  getUserGoal?: Maybe<Goal>;
 };
 
 
@@ -114,6 +127,17 @@ export type QueryGetDateArgs = {
 
 export type QueryGetUserSituationsArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryGetUserGoalsArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGetUserGoalArgs = {
+  id: Scalars['ID'];
+  goalId: Scalars['ID'];
 };
 
 export type AddMoodInput = {
@@ -144,8 +168,8 @@ export type PlaceInput = {
   id?: Maybe<Scalars['String']>;
 };
 
-export type EdgeOfLifeImpactInput = {
-  edgeId?: Maybe<Scalars['String']>;
+export type GoalImpactInput = {
+  goal?: Maybe<Scalars['String']>;
   modifier?: Maybe<Scalars['Int']>;
 };
 
@@ -156,7 +180,13 @@ export type AddSituationInput = {
   from: Scalars['String'];
   to?: Maybe<Scalars['String']>;
   feelings?: Maybe<Array<Maybe<Scalars['String']>>>;
-  edges?: Maybe<Array<Maybe<EdgeOfLifeImpactInput>>>;
+  goalsModifiers?: Maybe<Array<Maybe<GoalImpactInput>>>;
+};
+
+export type AddGoalInput = {
+  title: Scalars['String'];
+  description: Scalars['String'];
+  starter_day: Scalars['String'];
 };
 
 export type AddCustomFeeling = {
@@ -175,6 +205,8 @@ export type Mutation = {
   createEdge?: Maybe<Edge>;
   /** Add situation */
   addSituation?: Maybe<Situation>;
+  /** Add goal */
+  addGoal?: Maybe<Goal>;
 };
 
 
@@ -205,6 +237,12 @@ export type MutationCreateEdgeArgs = {
 export type MutationAddSituationArgs = {
   _id: Scalars['ID'];
   input: AddSituationInput;
+};
+
+
+export type MutationAddGoalArgs = {
+  _id: Scalars['ID'];
+  input: AddGoalInput;
 };
 
 export type AddCustomFeelingMutationVariables = Exact<{
@@ -274,6 +312,20 @@ export type AddSituationMutation = (
   )> }
 );
 
+export type AddUserGoalMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: AddGoalInput;
+}>;
+
+
+export type AddUserGoalMutation = (
+  { __typename?: 'Mutation' }
+  & { addGoal?: Maybe<(
+    { __typename?: 'Goal' }
+    & Pick<Goal, 'title'>
+  )> }
+);
+
 export type GetUserAvailableFeelingsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -313,6 +365,16 @@ export type GetUserQuery = (
     )>>>, thoughts?: Maybe<Array<Maybe<(
       { __typename?: 'Thought' }
       & Pick<Thought, 'title' | 'description' | 'feelings' | 'date'>
+    )>>>, situations?: Maybe<Array<Maybe<(
+      { __typename?: 'Situation' }
+      & Pick<Situation, 'title' | 'description' | 'from' | 'feelings'>
+      & { place: (
+        { __typename?: 'Place' }
+        & Pick<Place, 'id'>
+      ), edges?: Maybe<Array<Maybe<(
+        { __typename?: 'EdgeOfLifeImpact' }
+        & Pick<EdgeOfLifeImpact, 'edge' | 'modifier'>
+      )>>> }
     )>>> }
   )> }
 );
@@ -341,6 +403,33 @@ export type GetDateQuery = (
         & Pick<EdgeOfLifeImpact, 'edge' | 'modifier'>
       )>>> }
     )>>> }
+  )> }
+);
+
+export type GetUserGoalsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetUserGoalsQuery = (
+  { __typename?: 'Query' }
+  & { getUserGoals?: Maybe<Array<Maybe<(
+    { __typename?: 'Goal' }
+    & Pick<Goal, 'id' | 'title' | 'description' | 'starter_day'>
+  )>>> }
+);
+
+export type GetUserGoalQueryVariables = Exact<{
+  id: Scalars['ID'];
+  goalId: Scalars['ID'];
+}>;
+
+
+export type GetUserGoalQuery = (
+  { __typename?: 'Query' }
+  & { getUserGoal?: Maybe<(
+    { __typename?: 'Goal' }
+    & Pick<Goal, 'id' | 'title' | 'description' | 'starter_day'>
   )> }
 );
 
@@ -513,6 +602,39 @@ export function useAddSituationMutation(baseOptions?: Apollo.MutationHookOptions
 export type AddSituationMutationHookResult = ReturnType<typeof useAddSituationMutation>;
 export type AddSituationMutationResult = Apollo.MutationResult<AddSituationMutation>;
 export type AddSituationMutationOptions = Apollo.BaseMutationOptions<AddSituationMutation, AddSituationMutationVariables>;
+export const AddUserGoalDocument = gql`
+    mutation AddUserGoal($id: ID!, $input: AddGoalInput!) {
+  addGoal(_id: $id, input: $input) {
+    title
+  }
+}
+    `;
+export type AddUserGoalMutationFn = Apollo.MutationFunction<AddUserGoalMutation, AddUserGoalMutationVariables>;
+
+/**
+ * __useAddUserGoalMutation__
+ *
+ * To run a mutation, you first call `useAddUserGoalMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddUserGoalMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addUserGoalMutation, { data, loading, error }] = useAddUserGoalMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddUserGoalMutation(baseOptions?: Apollo.MutationHookOptions<AddUserGoalMutation, AddUserGoalMutationVariables>) {
+        return Apollo.useMutation<AddUserGoalMutation, AddUserGoalMutationVariables>(AddUserGoalDocument, baseOptions);
+      }
+export type AddUserGoalMutationHookResult = ReturnType<typeof useAddUserGoalMutation>;
+export type AddUserGoalMutationResult = Apollo.MutationResult<AddUserGoalMutation>;
+export type AddUserGoalMutationOptions = Apollo.BaseMutationOptions<AddUserGoalMutation, AddUserGoalMutationVariables>;
 export const GetUserAvailableFeelingsDocument = gql`
     query GetUserAvailableFeelings($id: ID!) {
   feelings: getUserAvailableFeelings(id: $id)
@@ -592,6 +714,19 @@ export const GetUserDocument = gql`
       description
       feelings
       date
+    }
+    situations {
+      title
+      description
+      from
+      place {
+        id
+      }
+      feelings
+      edges {
+        edge
+        modifier
+      }
     }
   }
 }
@@ -674,3 +809,76 @@ export function useGetDateLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetDateQueryHookResult = ReturnType<typeof useGetDateQuery>;
 export type GetDateLazyQueryHookResult = ReturnType<typeof useGetDateLazyQuery>;
 export type GetDateQueryResult = Apollo.QueryResult<GetDateQuery, GetDateQueryVariables>;
+export const GetUserGoalsDocument = gql`
+    query GetUserGoals($id: ID!) {
+  getUserGoals(id: $id) {
+    id
+    title
+    description
+    starter_day
+  }
+}
+    `;
+
+/**
+ * __useGetUserGoalsQuery__
+ *
+ * To run a query within a React component, call `useGetUserGoalsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserGoalsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserGoalsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserGoalsQuery(baseOptions?: Apollo.QueryHookOptions<GetUserGoalsQuery, GetUserGoalsQueryVariables>) {
+        return Apollo.useQuery<GetUserGoalsQuery, GetUserGoalsQueryVariables>(GetUserGoalsDocument, baseOptions);
+      }
+export function useGetUserGoalsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserGoalsQuery, GetUserGoalsQueryVariables>) {
+          return Apollo.useLazyQuery<GetUserGoalsQuery, GetUserGoalsQueryVariables>(GetUserGoalsDocument, baseOptions);
+        }
+export type GetUserGoalsQueryHookResult = ReturnType<typeof useGetUserGoalsQuery>;
+export type GetUserGoalsLazyQueryHookResult = ReturnType<typeof useGetUserGoalsLazyQuery>;
+export type GetUserGoalsQueryResult = Apollo.QueryResult<GetUserGoalsQuery, GetUserGoalsQueryVariables>;
+export const GetUserGoalDocument = gql`
+    query GetUserGoal($id: ID!, $goalId: ID!) {
+  getUserGoal(id: $id, goalId: $goalId) {
+    id
+    title
+    description
+    starter_day
+  }
+}
+    `;
+
+/**
+ * __useGetUserGoalQuery__
+ *
+ * To run a query within a React component, call `useGetUserGoalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserGoalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserGoalQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      goalId: // value for 'goalId'
+ *   },
+ * });
+ */
+export function useGetUserGoalQuery(baseOptions?: Apollo.QueryHookOptions<GetUserGoalQuery, GetUserGoalQueryVariables>) {
+        return Apollo.useQuery<GetUserGoalQuery, GetUserGoalQueryVariables>(GetUserGoalDocument, baseOptions);
+      }
+export function useGetUserGoalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserGoalQuery, GetUserGoalQueryVariables>) {
+          return Apollo.useLazyQuery<GetUserGoalQuery, GetUserGoalQueryVariables>(GetUserGoalDocument, baseOptions);
+        }
+export type GetUserGoalQueryHookResult = ReturnType<typeof useGetUserGoalQuery>;
+export type GetUserGoalLazyQueryHookResult = ReturnType<typeof useGetUserGoalLazyQuery>;
+export type GetUserGoalQueryResult = Apollo.QueryResult<GetUserGoalQuery, GetUserGoalQueryVariables>;

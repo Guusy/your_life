@@ -8,6 +8,8 @@ export default class User {
 
   situations: Situation[];
 
+  goals: any[];
+
   static fromJson(json: any): User {
     return Object.assign(new User(), json);
   }

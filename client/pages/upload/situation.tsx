@@ -35,7 +35,7 @@ const SituationPage = () => {
             from: from.format('DD-MM-YYYY'),
             feelings,
             place: { id: place },
-            edges: [{ edgeId: goal, modifier: Number.parseInt(modifier, 10) }]
+            goalsModifiers: [{ goal, modifier: Number.parseInt(modifier, 10) }]
           }
         }
       });

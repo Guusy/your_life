@@ -42,3 +42,11 @@ export const ADD_SITUATION = gql`
     }
   }
 `;
+
+export const ADD_USER_GOAL = gql`
+  mutation AddUserGoal($id: ID!, $input: AddGoalInput!) {
+    addGoal(_id: $id, input: $input) {
+      title
+    }
+  }
+`;

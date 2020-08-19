@@ -46,5 +46,11 @@ export default {
   addSituation(root, { _id, input }: AddSituation): Promise<any> {
     return UserRepository.addSituation(_id, input);
     // TODO: devolver el objeto creado boludo
+  },
+  addGoal(root, { _id, input }): Promise<any> {
+    return UserRepository.addGoal(_id, {
+      ...input,
+      id: input.title.toLowerCase().replace(' ', '_')
+    }).then(() => input);
   }
 };

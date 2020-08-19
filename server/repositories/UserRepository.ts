@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { Mongo } from '../db/mongo';
 import Thought, { Edge } from '../domain/Thought';
-import Situation from "../domain/Situation";
+import Situation from '../domain/Situation';
 
 class UserRepository {
   createEdge(userId: string, newEdge: Edge) {
@@ -33,6 +33,13 @@ class UserRepository {
     return Mongo.usersCollection.updateOne(
       { _id: userId },
       { $push: { situations: situation } }
+    );
+  }
+
+  addGoal(userId: any, goal: any) {
+    return Mongo.usersCollection.updateOne(
+      { _id: userId },
+      { $push: { goals: goal } }
     );
   }
 }

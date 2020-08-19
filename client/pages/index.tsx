@@ -29,7 +29,10 @@ function Home() {
             <h4>Pensamientos</h4>
             {/* <ThoughtsView thoughts={data.getUser.thoughts} /> */}
 
-            <Calendar thoughts={data.getUser.thoughts} />
+            <Calendar
+              thoughts={data.getUser.thoughts}
+              situations={data.getUser.situations}
+            />
           </div>
         )}
       </main>

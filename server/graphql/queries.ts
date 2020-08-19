@@ -41,5 +41,13 @@ export default {
     // TODO: normalizar data entre la query y la mutation
     const user: User = await UserRepository.getById(id);
     return user.situations;
+  },
+  getUserGoals: async (root, { id }): Promise<any> => {
+    const user: User = await UserRepository.getById(id);
+    return user.goals;
+  },
+  getUserGoal: async (root, { id, goalId }): Promise<any> => {
+    const user: User = await UserRepository.getById(id);
+    return user.goals.find(goal => goal.id === goalId);
   }
 };

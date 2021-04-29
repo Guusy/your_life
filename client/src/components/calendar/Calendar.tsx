@@ -4,16 +4,17 @@ import Link from 'next/link';
 import Calendar, { RangeFilter } from '../../domain/Calendar';
 import Thought from '../../domain/Thought';
 import FeelingsPieChart from '../feelingsPieChart/FeelingsPieChart';
-import { Situation } from '../../graphql/API';
+import { Feeling, Situation } from '../../graphql/API';
 
 interface CalendarProps {
   thoughts: Thought[];
   situations: Situation[];
+  feelings: Feeling[];
 }
 
-export default ({ thoughts, situations }: CalendarProps) => {
+export default ({ thoughts, situations, feelings }: CalendarProps) => {
   const [rangeFilter, setRangeFilter] = useState<RangeFilter>(RangeFilter.week);
-  const calendar = new Calendar({ thoughts, situations });
+  const calendar = new Calendar({ thoughts, situations, feelings });
   const handleSizeChange = event => {
     const {
       target: { value }

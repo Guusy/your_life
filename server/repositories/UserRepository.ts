@@ -15,7 +15,7 @@ class UserRepository {
     return Mongo.usersCollection.findOne({ _id: userId });
   }
 
-  addCustomFeeling(userId: string, newFeeling: string) {
+  addCustomFeeling(userId: string, newFeeling) {
     return Mongo.usersCollection.updateOne(
       { _id: userId },
       { $push: { customFeelings: newFeeling } }

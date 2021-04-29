@@ -34,7 +34,7 @@ export default {
   },
 
   addCustomFeeling(root, { _id, input }: addCustomFeeling): Promise<any> {
-    return UserRepository.addCustomFeeling(_id, input.feeling).then(_ => 'ok');
+    return UserRepository.addCustomFeeling(_id, input).then(_ => 'ok');
   },
   addThought(root, { _id, input }: AddThought): Promise<any> {
     return UserRepository.addThought(_id, input).then(_ => input);

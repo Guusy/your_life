@@ -1,4 +1,5 @@
 import UserRepository from '../repositories/UserRepository';
+import { defaultFeelings } from '../domain/User';
 
 const types = {
   User: {
@@ -7,8 +8,18 @@ const types = {
       return {
         name: 'gonzalo'
       };
+    },
+    customFeelings: ({ customFeelings = [] }) => {
+      return [...defaultFeelings, ...customFeelings];
     }
   },
+
+  // diversion, triste, incertidumbre
+  //   feelings: (props, context, info) => {
+  //     console.log('props', props, context, info);
+  //     return [];
+  //   }
+  // },
   Mood: {
     __resolveType: (item, context, info) => {
       return [];

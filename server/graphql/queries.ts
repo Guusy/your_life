@@ -1,5 +1,5 @@
 import UserRepository from '../repositories/UserRepository';
-import User from '../domain/User';
+import User, { defaultFeelings } from '../domain/User';
 import { UserDate } from '../domain/UserDate';
 import Situation from '../domain/Situation';
 
@@ -16,17 +16,14 @@ export default {
       throw error;
     }
   },
-  getUserAvailableFeelings: (root, { id }): Promise<string[]> => {
-    const defaultFeelings = [
-      'enojo',
-      'tristeza',
-      'ansiedad',
-      'felicidad',
-      'decepción'
-    ];
+  getUserAvailableFeelings: async (
+    root,
+    { id }
+  ): Promise<{ feeling: string; color: string }[]> => {
     return UserRepository.getById(id)
       .then(response => User.fromJson(response))
       .then((user: User) => {
+        console.log('222222', [...user.customFeelings, ...defaultFeelings]);
         return [...user.customFeelings, ...defaultFeelings];
       });
   },

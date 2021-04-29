@@ -13,6 +13,12 @@ export type Scalars = {
 };
 
 
+export type Feeling = {
+  __typename?: 'Feeling';
+  feeling: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -21,7 +27,7 @@ export type User = {
   edges?: Maybe<Array<Maybe<Edge>>>;
   moods?: Maybe<Array<Maybe<Mood>>>;
   thoughts?: Maybe<Array<Maybe<Thought>>>;
-  customFeelings?: Maybe<Array<Maybe<Scalars['String']>>>;
+  customFeelings?: Maybe<Array<Maybe<Feeling>>>;
 };
 
 export type Mood = {
@@ -83,6 +89,13 @@ export type Goal = {
   title: Scalars['String'];
   description: Scalars['String'];
   starter_day?: Maybe<Scalars['String']>;
+  modifiers?: Maybe<Array<Maybe<GoalImpact>>>;
+};
+
+export type GoalImpact = {
+  __typename?: 'GoalImpact';
+  goal?: Maybe<Scalars['String']>;
+  modifier?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -90,7 +103,7 @@ export type Query = {
   /** User by id */
   getUser?: Maybe<User>;
   /** User custom feelings + standart feelings */
-  getUserAvailableFeelings?: Maybe<Array<Maybe<Scalars['String']>>>;
+  getUserAvailableFeelings?: Maybe<Array<Maybe<Feeling>>>;
   /** User edges */
   getUserAvailableEdges?: Maybe<Array<Maybe<Edge>>>;
   /** Get date */
@@ -190,7 +203,8 @@ export type AddGoalInput = {
 };
 
 export type AddCustomFeeling = {
-  feeling?: Maybe<Scalars['String']>;
+  feeling: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
@@ -266,7 +280,7 @@ export type AddMoodMutation = (
   { __typename?: 'Mutation' }
   & { addMood?: Maybe<(
     { __typename?: 'Mood' }
-    & Pick<Mood, 'title' | 'feelings' | 'description'>
+    & Pick<Mood, 'title' | 'description'>
   )> }
 );
 
@@ -294,7 +308,7 @@ export type AddThoughtMutation = (
   { __typename?: 'Mutation' }
   & { addThought?: Maybe<(
     { __typename?: 'Thought' }
-    & Pick<Thought, 'title' | 'feelings' | 'description'>
+    & Pick<Thought, 'title' | 'description'>
   )> }
 );
 
@@ -333,7 +347,10 @@ export type GetUserAvailableFeelingsQueryVariables = Exact<{
 
 export type GetUserAvailableFeelingsQuery = (
   { __typename?: 'Query' }
-  & { feelings: Query['getUserAvailableFeelings'] }
+  & { getUserAvailableFeelings?: Maybe<Array<Maybe<(
+    { __typename?: 'Feeling' }
+    & Pick<Feeling, 'feeling' | 'color'>
+  )>>> }
 );
 
 export type GetUserAvailableEdgesQueryVariables = Exact<{
@@ -359,7 +376,10 @@ export type GetUserQuery = (
   & { getUser?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id'>
-    & { moods?: Maybe<Array<Maybe<(
+    & { customFeelings?: Maybe<Array<Maybe<(
+      { __typename?: 'Feeling' }
+      & Pick<Feeling, 'feeling' | 'color'>
+    )>>>, moods?: Maybe<Array<Maybe<(
       { __typename?: 'Mood' }
       & Pick<Mood, 'title' | 'feelings' | 'description'>
     )>>>, thoughts?: Maybe<Array<Maybe<(
@@ -469,7 +489,6 @@ export const AddMoodDocument = gql`
     mutation AddMood($id: ID!, $input: AddMoodInput!) {
   addMood(_id: $id, input: $input) {
     title
-    feelings
     description
   }
 }
@@ -538,7 +557,6 @@ export const AddThoughtDocument = gql`
     mutation AddThought($id: ID!, $input: AddThoughtInput!) {
   addThought(_id: $id, input: $input) {
     title
-    feelings
     description
   }
 }
@@ -637,7 +655,10 @@ export type AddUserGoalMutationResult = Apollo.MutationResult<AddUserGoalMutatio
 export type AddUserGoalMutationOptions = Apollo.BaseMutationOptions<AddUserGoalMutation, AddUserGoalMutationVariables>;
 export const GetUserAvailableFeelingsDocument = gql`
     query GetUserAvailableFeelings($id: ID!) {
-  feelings: getUserAvailableFeelings(id: $id)
+  getUserAvailableFeelings(id: $id) {
+    feeling
+    color
+  }
 }
     `;
 
@@ -704,6 +725,10 @@ export const GetUserDocument = gql`
     query getUser($id: ID!) {
   getUser(id: $id) {
     id
+    customFeelings {
+      feeling
+      color
+    }
     moods {
       title
       feelings

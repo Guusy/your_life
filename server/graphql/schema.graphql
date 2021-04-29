@@ -1,5 +1,10 @@
 scalar Date
 
+type Feeling {
+    feeling: String!
+    color: String
+}
+
 type User {
     id: ID!
     name: String
@@ -7,7 +12,7 @@ type User {
     edges:[Edge]
     moods: [Mood]
     thoughts: [Thought]
-    customFeelings: [String]
+    customFeelings: [Feeling]
 }
 
 type Mood {
@@ -36,7 +41,7 @@ type Situation {
     place: Place!
     from: String
     to: String
-    feelings:[String]
+    feelings: [String]
     edges: [EdgeOfLifeImpact]
     goalsModifiers: [Goal]
 }
@@ -74,7 +79,7 @@ type Query {
     "User by id"
     getUser( id: ID!): User
     "User custom feelings + standart feelings"
-    getUserAvailableFeelings( id: ID!): [String]
+    getUserAvailableFeelings( id: ID!): [Feeling]
     "User edges"
     getUserAvailableEdges( id: ID!): [Edge]
     "Get date"
@@ -137,7 +142,8 @@ input AddGoalInput {
 }
 
 input AddCustomFeeling {
-    feeling: String
+    feeling: String!
+    color: String
 }
 
 type Mutation {

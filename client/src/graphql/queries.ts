@@ -2,7 +2,10 @@ import { gql } from 'apollo-boost';
 
 export const GET_USER_AVAILABLE_FEELINGS = gql`
   query GetUserAvailableFeelings($id: ID!) {
-    feelings: getUserAvailableFeelings(id: $id)
+    getUserAvailableFeelings(id: $id) {
+      feeling
+      color
+    }
   }
 `;
 
@@ -19,6 +22,10 @@ export const GET_USER = gql`
   query getUser($id: ID!) {
     getUser(id: $id) {
       id
+      customFeelings {
+        feeling
+        color
+      }
       moods {
         title
         feelings

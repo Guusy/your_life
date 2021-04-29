@@ -3,7 +3,7 @@ import { Data } from 'react-minimal-pie-chart/types/commonTypes';
 import getMostFrequentInAList from '../utils/getMostFrequentInAList';
 import getDaysOfTheWeek from '../utils/getDaysOfTheWeek';
 import getDaysArrayByMonth from '../utils/getDaysOfTheMonth';
-import { Situation, Thought } from '../graphql/API';
+import { Feeling, Situation, Thought } from '../graphql/API';
 
 export enum RangeFilter {
   week = 'week',
@@ -30,15 +30,20 @@ export default class Calendar {
 
   situations: Situation[];
 
+  feelings: Feeling[];
+
   constructor({
     thoughts,
-    situations
+    situations,
+    feelings
   }: {
     thoughts: Thought[];
     situations: Situation[];
+    feelings: Feeling[];
   }) {
     this.thoughts = thoughts;
     this.situations = situations;
+    this.feelings = feelings;
   }
 
   getAllFelingsOf(range: RangeFilter): string[] {
@@ -65,14 +70,22 @@ export default class Calendar {
     });
 
     return Object.keys(count).map(key => {
+      const value = count[key];
+      console.log(key)
       return {
         title: key,
-        value: count[key],
-        color: `#${Math.random()
-          .toString(16)
-          .substr(-6)}`
+        value,
+        color: this._getColor(key)
       };
     });
+  }
+
+  _getColor(feelingId: string): string {
+    console.log('this', this.feelings)
+    const feeling = this.feelings.find(
+      feelingC => feelingC.feeling === feelingId
+    );
+    return feeling ? feeling.color : 'black';
   }
 
   getThePrincipalFeelingOf(range: RangeFilter): string {

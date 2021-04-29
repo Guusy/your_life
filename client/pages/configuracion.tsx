@@ -10,6 +10,7 @@ import withApollo from '../src/lib/apollo';
 import { GET_USER_AVAILABLE_EDGES } from '../src/graphql/queries';
 import { CREATE_EDGE } from '../src/graphql/mutations';
 import ProfileGoals from '../src/components/profileGoals/ProfileGoals';
+import CustomFeelings from "../src/components/customFeelings/CustomFeelings";
 
 const Config = () => {
   const { data: edgesData, loading: loadingEdges } = useQuery<
@@ -74,6 +75,8 @@ const Config = () => {
           </Button>
         )}
         <ProfileGoals />
+
+        <CustomFeelings />
       </div>
     </div>
   );

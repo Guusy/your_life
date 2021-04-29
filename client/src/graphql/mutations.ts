@@ -10,7 +10,6 @@ export const ADD_MOOD = gql`
   mutation AddMood($id: ID!, $input: AddMoodInput!) {
     addMood(_id: $id, input: $input) {
       title
-      feelings
       description
     }
   }
@@ -29,7 +28,6 @@ export const ADD_THOUGHT = gql`
   mutation AddThought($id: ID!, $input: AddThoughtInput!) {
     addThought(_id: $id, input: $input) {
       title
-      feelings
       description
     }
   }

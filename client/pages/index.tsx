@@ -30,6 +30,7 @@ function Home() {
             {/* <ThoughtsView thoughts={data.getUser.thoughts} /> */}
 
             <Calendar
+              feelings={data.getUser.customFeelings}
               thoughts={data.getUser.thoughts}
               situations={data.getUser.situations}
             />

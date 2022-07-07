@@ -28,7 +28,7 @@
     "express-graphql": "^0.9.0",
     "graphql": "^15.1.0",
     "graphql-tools": "^6.0.10",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "mongodb": "^3.5.9",
     "morgan": "^1.10.0",
     "next": "9.3.5",
